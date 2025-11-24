@@ -1,1 +1,3 @@
-# simple-talk-app-backend
+# SimpleTalk
+
+## Backend server
