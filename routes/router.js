@@ -1,12 +1,13 @@
-const { Router } = require("express");
+import { Router } from "express";
+import db from "../db/queries.js";
+import authController from "../controllers/authController.js";
+import messageController from "../controllers/messageController.js";
+import userController from "../controllers/userController.js";
+
 const router = Router();
-const db = require("../db/queries");
-const authController = require("../controllers/authController");
-const messageController = require("../controllers/messageController");
-const userController = require("../controllers/userController");
 
 router.get("/", (req, res) => {
     res.send("Hello World");
 });
 
-module.exports = router;
+export default router;
