@@ -1,13 +1,10 @@
 import { Router } from "express";
-import db from "../db/queries.js";
+import validateSignUp from "../utils/validation.js";
 import authController from "../controllers/authController.js";
-import messageController from "../controllers/messageController.js";
-import userController from "../controllers/userController.js";
 
 const router = Router();
 
-router.get("/", (req, res) => {
-    res.send("Hello World");
-});
+router.post("/sign-up", validateSignUp, authController.registerProfile);
+router.post("/log-in", authController.logIn);
 
 export default router;
