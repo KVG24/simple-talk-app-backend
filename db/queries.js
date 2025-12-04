@@ -1,24 +1,29 @@
-import { PrismaClient } from "@prisma/client";
+require("dotenv").config();
+const { PrismaClient } = require("../generated/prisma");
 
-const prisma = new PrismaClient();
+const { PrismaPg } = require("@prisma/adapter-pg");
+const adapter = new PrismaPg({
+    connectionString: process.env.DATABASE_URL,
+});
+const prisma = new PrismaClient({ adapter });
 
-export async function getProfile(username) {
-    return await prisma.profile.findFirst({
+async function getProfile(username) {
+    return await prisma.profile.findUnique({
         where: {
             username,
         },
     });
 }
 
-export async function getProfileById(id) {
-    return await prisma.profile.findFirst({
+async function getProfileById(id) {
+    return await prisma.profile.findUnique({
         where: {
             id,
         },
     });
 }
 
-export async function registerProfile(email, password, name, username) {
+async function registerProfile(email, password, name, username) {
     await prisma.profile.create({
         data: {
             email,
@@ -29,7 +34,7 @@ export async function registerProfile(email, password, name, username) {
     });
 }
 
-export default {
+module.exports = {
     getProfile,
     getProfileById,
     registerProfile,

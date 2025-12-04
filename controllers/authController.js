@@ -1,10 +1,10 @@
-import { validationResult } from "express-validator";
-import { hash, compare } from "bcryptjs";
-import jwt from "jsonwebtoken";
-import {
+const { validationResult } = require("express-validator");
+const { hash, compare } = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const {
     getProfile,
-    registerProfile as dbRegisterProfile,
-} from "../db/queries.js";
+    registerProfile: dbRegisterProfile,
+} = require("../db/queries");
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -77,7 +77,7 @@ async function logIn(req, res, next) {
     }
 }
 
-export default {
+module.exports = {
     registerProfile,
     logIn,
 };

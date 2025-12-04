@@ -1,10 +1,10 @@
-import express from "express";
-import cors from "cors";
-import passport from "passport";
-import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
-import router from "./routes/router.js";
-import db from "./db/queries.js";
-import "dotenv/config";
+const express = require("express");
+const cors = require("cors");
+const passport = require("passport");
+const { Strategy: JwtStrategy, ExtractJwt } = require("passport-jwt");
+const router = require("./routes/router.js");
+const db = require("./db/queries.js");
+require("dotenv/config");
 
 // Initiate main express app
 const app = express();
