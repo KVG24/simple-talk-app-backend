@@ -1,10 +1,7 @@
 const { validationResult } = require("express-validator");
-const { hash, compare } = require("bcryptjs");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const {
-    getProfile,
-    registerProfile: dbRegisterProfile,
-} = require("../db/queries");
+const db = require("../db/queries");
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -19,14 +16,14 @@ async function registerProfile(req, res, next) {
         }
 
         // Check if username is taken
-        const registeredUser = await getProfile(username);
+        const registeredUser = await db.getProfile(username);
         if (registeredUser) {
             return res.status(400).json({ message: "Username already taken" });
         }
 
         // Register user
-        const hashedPassword = await hash(password, 10);
-        await dbRegisterProfile(email, hashedPassword, name, username);
+        const hashedPassword = await bcrypt.hash(password, 10);
+        await db.registerProfile(email, hashedPassword, name, username);
 
         res.status(201).json({ message: "Registration successful" });
     } catch (err) {
@@ -42,7 +39,7 @@ async function logIn(req, res, next) {
         const { username, password } = req.body;
 
         // Find user by username
-        const user = await getProfile(username);
+        const user = await db.getProfile(username);
 
         if (!user) {
             return res
@@ -51,7 +48,7 @@ async function logIn(req, res, next) {
         }
 
         // Compare passwords
-        const match = await compare(password, user.password);
+        const match = await bcrypt.compare(password, user.password);
 
         if (!match) {
             return res
