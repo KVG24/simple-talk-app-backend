@@ -42,18 +42,14 @@ async function logIn(req, res, next) {
         const user = await db.getProfile(username);
 
         if (!user) {
-            return res
-                .status(401)
-                .json({ message: "Incorrect username or password" });
+            return res.status(401).json({ message: "Incorrect username" });
         }
 
         // Compare passwords
         const match = await bcrypt.compare(password, user.password);
 
         if (!match) {
-            return res
-                .status(401)
-                .json({ message: "Incorrect username or password" });
+            return res.status(401).json({ message: "Incorrect password" });
         }
 
         // Generate JWT Token
