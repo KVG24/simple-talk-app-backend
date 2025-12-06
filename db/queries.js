@@ -60,11 +60,19 @@ async function getMessagesBySenderId(senderId) {
     });
 }
 
-async function getConversation(senderId, receiverId) {
+async function getConversation(user1Id, user2Id) {
     return await prisma.message.findMany({
         where: {
-            senderId,
-            receiverId,
+            OR: [
+                {
+                    senderId: user1Id,
+                    receiverId: user2Id,
+                },
+                {
+                    senderId: user2Id,
+                    receiverId: user1Id,
+                },
+            ],
         },
         orderBy: {
             createdAt: "desc",

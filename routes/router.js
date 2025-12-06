@@ -11,17 +11,13 @@ router.post("/sign-up", validateSignUp, authController.registerProfile);
 router.post("/log-in", authController.logIn);
 
 router.get(
-    "/messages/:receiverId",
+    "/messages/received",
     authenticate,
-    messageController.getMessagesByReceiverId
+    messageController.getReceivedMessages
 );
+router.get("/messages/sent", authenticate, messageController.getSentMessages);
 router.get(
-    "/messages/:senderId",
-    authenticate,
-    messageController.getMessagesBySenderId
-);
-router.get(
-    "/messages/:senderId/:receiverId",
+    "/messages/conversationWith/:profileId",
     authenticate,
     messageController.getConversation
 );

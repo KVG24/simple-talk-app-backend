@@ -1,13 +1,8 @@
 const db = require("../db/queries");
 
-async function getMessagesByReceiverId(req, res) {
+async function getReceivedMessages(req, res) {
     try {
-        const messages = await db.getMessagesByReceiverId(
-            Number(req.params.receiverId)
-        );
-        if (!messages) {
-            return res.status(400).json({ message: "Messages not found" });
-        }
+        const messages = await db.getMessagesByReceiverId(Number(req.user.id));
         res.status(200).json(messages);
     } catch (err) {
         console.error(err);
@@ -15,14 +10,9 @@ async function getMessagesByReceiverId(req, res) {
     }
 }
 
-async function getMessagesBySenderId(req, res) {
+async function getSentMessages(req, res) {
     try {
-        const messages = await db.getMessagesBySenderId(
-            Number(req.params.senderId)
-        );
-        if (!messages) {
-            return res.status(400).json({ message: "Messages not found" });
-        }
+        const messages = await db.getMessagesBySenderId(Number(req.user.id));
         res.status(200).json(messages);
     } catch (err) {
         console.error(err);
@@ -33,12 +23,9 @@ async function getMessagesBySenderId(req, res) {
 async function getConversation(req, res) {
     try {
         const conversation = await db.getConversation(
-            Number(req.params.senderId),
-            Number(req.params.receiverId)
+            Number(req.user.id),
+            Number(req.params.profileId)
         );
-        if (!conversation) {
-            return res.status(400).json({ message: "Conversation not found" });
-        }
         res.status(200).json(conversation);
     } catch (err) {
         console.error(err);
@@ -48,10 +35,10 @@ async function getConversation(req, res) {
 
 async function createMessage(req, res) {
     try {
-        const { text, senderId, receiverId } = req.body;
+        const { text, receiverId } = req.body;
         const newMessage = await db.createMessage(
             text,
-            Number(senderId),
+            Number(req.user.id),
             Number(receiverId)
         );
         res.status(201).json(newMessage);
@@ -85,8 +72,8 @@ async function deleteMessage(req, res) {
 }
 
 module.exports = {
-    getMessagesByReceiverId,
-    getMessagesBySenderId,
+    getReceivedMessages,
+    getSentMessages,
     getConversation,
     createMessage,
     editMessage,
