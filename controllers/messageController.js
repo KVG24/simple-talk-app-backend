@@ -6,7 +6,7 @@ async function getReceivedMessages(req, res) {
         res.status(200).json(messages);
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: "Error fetching messages" });
+        res.status(500).json({ message: "Error fetching received messages" });
     }
 }
 
@@ -16,7 +16,7 @@ async function getSentMessages(req, res) {
         res.status(200).json(messages);
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: "Error fetching messages" });
+        res.status(500).json({ message: "Error fetching sent messages" });
     }
 }
 

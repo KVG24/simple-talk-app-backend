@@ -22,7 +22,11 @@ router.get(
     messageController.getConversation
 );
 router.post("/messages/create", authenticate, messageController.createMessage);
-router.put("/messages/:id", authenticate, messageController.editMessage);
-router.delete("/messages/:id", authenticate, messageController.deleteMessage);
+router.put("/messages/edit/:id", authenticate, messageController.editMessage);
+router.delete(
+    "/messages/delete/:id",
+    authenticate,
+    messageController.deleteMessage
+);
 
 module.exports = router;
