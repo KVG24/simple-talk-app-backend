@@ -26,6 +26,21 @@ async function getProfileById(id) {
     });
 }
 
+async function getProfilesByIds(ids) {
+    return await prisma.profile.findMany({
+        where: {
+            id: {
+                in: ids,
+            },
+        },
+        select: {
+            id: true,
+            username: true,
+            name: true,
+        },
+    });
+}
+
 async function registerProfile(email, password, name, username) {
     await prisma.profile.create({
         data: {
@@ -56,6 +71,18 @@ async function getMessagesBySenderId(senderId) {
         },
         orderBy: {
             createdAt: "desc",
+        },
+    });
+}
+
+async function getMessagePartnersIds(currentUserId) {
+    return await prisma.message.findMany({
+        where: {
+            OR: [{ senderId: currentUserId }, { receiverId: currentUserId }],
+        },
+        select: {
+            senderId: true,
+            receiverId: true,
         },
     });
 }
@@ -112,9 +139,11 @@ async function deleteMessage(id) {
 module.exports = {
     getProfile,
     getProfileById,
+    getProfilesByIds,
     registerProfile,
     getMessagesByReceiverId,
     getMessagesBySenderId,
+    getMessagePartnersIds,
     getConversation,
     createMessage,
     editMessage,

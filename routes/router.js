@@ -17,6 +17,11 @@ router.get(
 );
 router.get("/messages/sent", authenticate, messageController.getSentMessages);
 router.get(
+    "/messages/partners",
+    authenticate,
+    messageController.getConversationProfiles
+);
+router.get(
     "/messages/conversationWith/:profileId",
     authenticate,
     messageController.getConversation

@@ -20,6 +20,38 @@ async function getSentMessages(req, res) {
     }
 }
 
+async function getConversationProfiles(req, res) {
+    try {
+        const currentUserId = Number(req.user.id);
+        const messages = await db.getMessagePartnersIds(currentUserId);
+        const partnerIDs = new Set();
+
+        // iterate over all messages involving current user
+        // and create a set of unique IDs of message partners
+        messages.forEach((message) => {
+            if (message.senderId === currentUserId) {
+                partnerIDs.add(message.receiverId);
+            } else if (message.receiverId === currentUserId) {
+                partnerIDs.add(message.senderId);
+            }
+        });
+        const uniqueIds = Array.from(partnerIDs);
+        // filter in case if user messaged himself
+        const finalPartnerIds = uniqueIds.filter((id) => id !== currentUserId);
+
+        if (finalPartnerIds.length === 0) {
+            return res.status(200).json([]);
+        }
+        const partners = await db.getProfilesByIds(finalPartnerIds);
+        res.status(200).json(partners);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            message: "Error fetching conversation profiles",
+        });
+    }
+}
+
 async function getConversation(req, res) {
     try {
         const conversation = await db.getConversation(
@@ -74,6 +106,7 @@ async function deleteMessage(req, res) {
 module.exports = {
     getReceivedMessages,
     getSentMessages,
+    getConversationProfiles,
     getConversation,
     createMessage,
     editMessage,
