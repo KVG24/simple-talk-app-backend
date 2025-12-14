@@ -59,7 +59,7 @@ async function getMessagesByReceiverId(receiverId) {
             receiverId,
         },
         orderBy: {
-            createdAt: "desc",
+            createdAt: "asc",
         },
     });
 }
@@ -70,7 +70,7 @@ async function getMessagesBySenderId(senderId) {
             senderId,
         },
         orderBy: {
-            createdAt: "desc",
+            createdAt: "asc",
         },
     });
 }
@@ -102,7 +102,7 @@ async function getConversation(user1Id, user2Id) {
             ],
         },
         orderBy: {
-            createdAt: "desc",
+            createdAt: "asc",
         },
     });
 }
