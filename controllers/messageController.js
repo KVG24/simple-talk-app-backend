@@ -43,7 +43,7 @@ async function getConversationProfiles(req, res) {
             return res.status(200).json([]);
         }
         const partners = await db.getProfilesByIds(finalPartnerIds);
-        res.status(200).json(partners);
+        res.status(200).json({ partners, currentUserId });
     } catch (err) {
         console.error(err);
         res.status(500).json({
