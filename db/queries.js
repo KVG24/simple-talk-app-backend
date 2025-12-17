@@ -102,7 +102,7 @@ async function getConversation(user1Id, user2Id) {
             ],
         },
         orderBy: {
-            createdAt: "asc",
+            createdAt: "desc",
         },
     });
 }
