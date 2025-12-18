@@ -135,7 +135,7 @@ async function getConversation(user1Id, user2Id) {
 }
 
 async function createMessage(text, senderId, receiverId) {
-    await prisma.message.create({
+    return await prisma.message.create({
         data: {
             text,
             senderId,
@@ -145,7 +145,7 @@ async function createMessage(text, senderId, receiverId) {
 }
 
 async function editMessage(id, text) {
-    await prisma.message.update({
+    return await prisma.message.update({
         where: {
             id,
         },
@@ -156,7 +156,7 @@ async function editMessage(id, text) {
 }
 
 async function deleteMessage(id) {
-    await prisma.message.delete({
+    return await prisma.message.delete({
         where: {
             id,
         },
