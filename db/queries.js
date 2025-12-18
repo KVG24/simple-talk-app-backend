@@ -52,6 +52,33 @@ async function registerProfile(email, password, name, username) {
     });
 }
 
+async function searchProfiles(searchString) {
+    return await prisma.profile.findMany({
+        where: {
+            OR: [
+                {
+                    name: {
+                        contains: searchString,
+                        mode: "insensitive",
+                    },
+                },
+                {
+                    username: {
+                        contains: searchString,
+                        mode: "insensitive",
+                    },
+                },
+            ],
+        },
+        select: {
+            id: true,
+            username: true,
+            name: true,
+        },
+        take: 10,
+    });
+}
+
 // Message queries
 async function getMessagesByReceiverId(receiverId) {
     return await prisma.message.findMany({
@@ -141,6 +168,7 @@ module.exports = {
     getProfileById,
     getProfilesByIds,
     registerProfile,
+    searchProfiles,
     getMessagesByReceiverId,
     getMessagesBySenderId,
     getMessagePartnersIds,

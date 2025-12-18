@@ -3,6 +3,7 @@ const passport = require("passport");
 const { validateSignUp } = require("../utils/validation.js");
 const authController = require("../controllers/authController.js");
 const messageController = require("../controllers/messageController");
+const profileController = require("../controllers/profileController.js");
 
 const router = Router();
 const authenticate = passport.authenticate("jwt", { session: false });
@@ -33,5 +34,7 @@ router.delete(
     authenticate,
     messageController.deleteMessage
 );
+
+router.get("/profiles/search", authenticate, profileController.profilesSearch);
 
 module.exports = router;
